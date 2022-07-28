@@ -1,36 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import axios from 'axios'
 
 
-export default class UserForm extends Component {
-    constructor(props) {
-      super(props)
-    
-      this.state = {
-         values:{
-            account:'',
-            name:'',
-            password:'',
-            email:'',
-            phone:'',
-            type:''
-         }
-      }
-    }
-
-    handleSubmit = async (e) => {
+const UserForm =({userDetail})  => {
+   
+    const handleSubmit = async (e) => {
         e.preventDefault()
     }
 
-    handleChange = () => {
+    const handleChange = () => {
 
     }
-
-  render() {
-    const {values} = this.state
+    // if(!userDetail)
+    // {
+    //     return
+    // }
     return (
-        <form onSubmit={this.handleSubmit}>
+        
+        <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="account" className="form-label">
             Account
@@ -38,9 +26,9 @@ export default class UserForm extends Component {
           <input
             id="account"
             className="form-control"
-            value={values.account}
+            value={userDetail.account}
             name="account"
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-3">
@@ -50,9 +38,9 @@ export default class UserForm extends Component {
           <input
             id="name"
             className="form-control"
-            value={values.name}
+            value={userDetail.name}
             name="name"
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </div>
       
@@ -63,9 +51,9 @@ export default class UserForm extends Component {
           <input
             id="password"
             className="form-control"
-            value={values.password}
+            value={userDetail.password}
             name="password"
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </div>
       
@@ -76,9 +64,9 @@ export default class UserForm extends Component {
           <input
             id="email"
             className="form-control"
-            value={values.email}
+            value={userDetail.email}
             name="email"
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-3">
@@ -88,9 +76,9 @@ export default class UserForm extends Component {
           <input
             id="phone"
             className="form-control"
-            value={values.phone}
+            value={userDetail.phone}
             name="phone"
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-3">
@@ -100,13 +88,14 @@ export default class UserForm extends Component {
           <input
             id="type"
             className="form-control"
-            value={values.type}
+            value={userDetail.type}
             name="type"
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </div>
         <button className="btn btn-dark">Submit</button>
       </form>
     )
-  }
+  
 }
+export default UserForm;

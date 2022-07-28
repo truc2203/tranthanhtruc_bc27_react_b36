@@ -9,6 +9,14 @@ export default class UserManagement extends Component {
     this.state = {
       users: [],
       userId: "",
+      userDetail:{
+        account:'',
+        name:'',
+        password:'',
+        email:'',
+        phone:'',
+        type:''
+      }
     };
   }
 
@@ -23,19 +31,28 @@ export default class UserManagement extends Component {
     }
   };
 
-  // fetchUsersDetele = async (userId) => {
-
-  // }
+  fetchUsersDetails = async () => {
+    try {
+        const {data} = await axios.get(`https://62aa993a371180affbd7ccc8.mockapi.io/api/react/${this.state.userId}`)
+        this.setState({userDetail:data})
+    } catch (error) {
+        console.log(error);
+    }
+  }
 
   componentDidMount() {
     this.fetchUsers();
   }
 
   componentDidUpdate(prevProp, prevState) {
-    // if(prevState.userId !== this.state.userId)
-    // {
-    //     this.fetchUsers()
-    // }
+    if(prevState.userId !== this.state.userId)
+    {
+        this.fetchUsersDetails()
+    }
+  }
+
+  handleSelect =(userId) => {
+    this.setState({userId})
   }
 
   render() {
@@ -48,7 +65,7 @@ export default class UserManagement extends Component {
             <strong>User Form</strong>
           </div>
           <div className="card-body">
-            <UserForm />
+            <UserForm userDetail={this.state.userDetail} />
           </div>
         </div>
 
@@ -57,7 +74,10 @@ export default class UserManagement extends Component {
             <strong>User List</strong>
           </div>
           <div className="card-body">
-            <UserList users={this.state.users} onDelete={this.fetchUsers} />
+            <UserList 
+             users={this.state.users}
+             onDelete={this.fetchUsers}
+             onSelect={this.handleSelect} />
           </div>
         </div>
       </div>
