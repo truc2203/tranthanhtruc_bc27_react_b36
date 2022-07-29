@@ -1,24 +1,72 @@
-import React from 'react'
+import React,{Component} from 'react'
 
 import axios from 'axios'
 
 
-const UserForm =({userDetail})  => {
-   
-    const handleSubmit = async (e) => {
+export default class UserForm extends Component{
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+        values:{
+          account:'',
+          name:'',
+          password:'',
+          email:'',
+          phone:'',
+          type:''
+        }
+      }
+    }
+
+     handleSubmit = async (e) => {
         e.preventDefault()
+        try {
+          const {id,...payload} = this.state.values
+          if(id){
+            await axios.put(`https://62aa993a371180affbd7ccc8.mockapi.io/api/react/${id}`,payload)
+            // console.log('put');
+
+          }
+          else{
+            await axios.post(`https://62aa993a371180affbd7ccc8.mockapi.io/api/react`,payload)
+            // console.log('post');
+
+          }
+        } catch (error) {
+          console.log(error);
+        }
+        this.props.onSuccess()
+        this.setState({values:{
+          account:'',
+          name:'',
+          password:'',
+          email:'',
+          phone:'',
+          type:''
+        }})
     }
 
-    const handleChange = () => {
-
+     handleChange = (e) => {
+      const {name,value} = e.target
+      this.setState((state) => ({values:{...state.values,[name]:value}}))
     }
-    // if(!userDetail)
+
+    componentDidUpdate(prevProp,prevState)
+    {
+      if(this.props.userDetail && prevProp.userDetail !== this.props.userDetail)
+      {
+        this.setState({values:{...this.props.userDetail}})
+      }
+    }
+    // if(!values)
     // {
     //     return
     // }
-    return (
-        
-        <form onSubmit={handleSubmit}>
+    render(){
+      const {values} = this.state
+      return (
+        <form onSubmit={this.handleSubmit}>
         <div className="mb-3">
           <label htmlFor="account" className="form-label">
             Account
@@ -26,9 +74,9 @@ const UserForm =({userDetail})  => {
           <input
             id="account"
             className="form-control"
-            value={userDetail.account}
+            value={values.account}
             name="account"
-            onChange={handleChange}
+            onChange={this.handleChange}
           />
         </div>
         <div className="mb-3">
@@ -38,9 +86,9 @@ const UserForm =({userDetail})  => {
           <input
             id="name"
             className="form-control"
-            value={userDetail.name}
+            value={values.name}
             name="name"
-            onChange={handleChange}
+            onChange={this.handleChange}
           />
         </div>
       
@@ -51,9 +99,9 @@ const UserForm =({userDetail})  => {
           <input
             id="password"
             className="form-control"
-            value={userDetail.password}
+            value={values.password}
             name="password"
-            onChange={handleChange}
+            onChange={this.handleChange}
           />
         </div>
       
@@ -64,9 +112,9 @@ const UserForm =({userDetail})  => {
           <input
             id="email"
             className="form-control"
-            value={userDetail.email}
+            value={values.email}
             name="email"
-            onChange={handleChange}
+            onChange={this.handleChange}
           />
         </div>
         <div className="mb-3">
@@ -76,9 +124,9 @@ const UserForm =({userDetail})  => {
           <input
             id="phone"
             className="form-control"
-            value={userDetail.phone}
+            value={values.phone}
             name="phone"
-            onChange={handleChange}
+            onChange={this.handleChange}
           />
         </div>
         <div className="mb-3">
@@ -88,14 +136,16 @@ const UserForm =({userDetail})  => {
           <input
             id="type"
             className="form-control"
-            value={userDetail.type}
+            value={values.type}
             name="type"
-            onChange={handleChange}
+            onChange={this.handleChange}
           />
         </div>
         <button className="btn btn-dark">Submit</button>
       </form>
     )
+    }
+    
   
 }
-export default UserForm;
+

@@ -35,6 +35,7 @@ export default class UserManagement extends Component {
     try {
         const {data} = await axios.get(`https://62aa993a371180affbd7ccc8.mockapi.io/api/react/${this.state.userId}`)
         this.setState({userDetail:data})
+        // console.log(this.state.userDetail);
     } catch (error) {
         console.log(error);
     }
@@ -54,6 +55,7 @@ export default class UserManagement extends Component {
   handleSelect =(userId) => {
     this.setState({userId})
   }
+  
 
   render() {
     return (
@@ -65,7 +67,10 @@ export default class UserManagement extends Component {
             <strong>User Form</strong>
           </div>
           <div className="card-body">
-            <UserForm userDetail={this.state.userDetail} />
+            <UserForm 
+            userDetail={this.state.userDetail}
+            onSuccess={this.fetchUsers}
+            />
           </div>
         </div>
 
